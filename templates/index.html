@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduGenie</title>
+    <title>EduGenie - AI Learning Assistant</title>
 
     <style>
         body {
@@ -14,35 +15,48 @@
             color: #F9FAFB;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
-            color: #333;
-        }
-
-        h2 {
-            color: #333;
+            color: #F9FAFB;
         }
 
         .section {
-            background: #f0f0f5;
+            background: #1F2937;
+            color: #F9FAFB;
             padding: 20px;
             margin: 20px auto;
             max-width: 800px;
-            border-radius: 6px;
+            border-radius: 10px;
+            border: 1px solid #374151;
         }
 
         .section h3 {
             text-align: center;
             margin-top: 0;
+            color: #E5E7EB;
         }
 
-        input,
+        input[type="text"],
         textarea {
             width: 70%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            border: 1px solid #4B5563;
+            border-radius: 6px;
             box-sizing: border-box;
+            background: #374151;
+            color: #FFFFFF;
+            font-size: 15px;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #D1D5DB;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 2px solid #60A5FA;
+            border-color: #60A5FA;
         }
 
         textarea {
@@ -51,48 +65,71 @@
         }
 
         button {
-            padding: 10px 18px;
-            margin-left: 5px;
-            background: #4285f4;
-            color: white;
+            padding: 11px 18px;
+            margin: 5px;
+            background: #2563EB;
+            color: #FFFFFF;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 14px;
         }
 
         button:hover {
-            background: #3367d6;
+            background: #1D4ED8;
         }
 
-        .result {
-            background: white;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 6px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.15);
-        }
-
+        .result,
         .quiz-question {
-            background: white;
+            background: #374151;
+            color: #F9FAFB;
             padding: 15px;
             margin-top: 15px;
-            border-radius: 6px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            border: 1px solid #4B5563;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            overflow-wrap: anywhere;
         }
 
         .option {
             display: block;
             margin: 10px 0;
+            color: #F9FAFB;
+        }
+
+        .option input[type="radio"] {
+            width: auto;
+            margin-right: 8px;
         }
 
         .correct {
-            color: green;
+            color: #4ADE80;
             font-weight: bold;
         }
 
         .wrong {
-            color: red;
+            color: #F87171;
             font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 15px;
+                margin: 15px auto;
+            }
+
+            input[type="text"],
+            textarea {
+                width: 100%;
+            }
+
+            button {
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
@@ -118,7 +155,6 @@
         </div>
     </div>
 
-
     <!-- Explanation -->
     <div class="section">
         <h3>Explain a Concept:</h3>
@@ -135,7 +171,6 @@
             Explanation will appear here.
         </div>
     </div>
-
 
     <!-- Summary -->
     <div class="section">
@@ -155,7 +190,6 @@
         </div>
     </div>
 
-
     <!-- Quiz -->
     <div class="section">
         <h3>Generate a Quiz:</h3>
@@ -170,7 +204,6 @@
 
         <div id="quizResult"></div>
     </div>
-
 
     <!-- Learning Path -->
     <div class="section">
@@ -191,11 +224,8 @@
         </div>
     </div>
 
-
     <script>
-
         async function askQuestion() {
-
             const question =
                 document.getElementById("question").value;
 
@@ -215,9 +245,7 @@
                 data.answer;
         }
 
-
         async function explainTopic() {
-
             const topic =
                 document.getElementById("topic").value;
 
@@ -237,9 +265,7 @@
                 data.explanation;
         }
 
-
         async function summarizeText() {
-
             const paragraph =
                 document.getElementById("paragraph").value;
 
@@ -259,9 +285,7 @@
                 data.summary;
         }
 
-
         async function generateQuiz() {
-
             const topic =
                 document.getElementById("quizTopic").value;
 
@@ -283,9 +307,7 @@
             quizContainer.innerHTML = "";
 
             data.quiz.forEach((question, index) => {
-
-                const div =
-                    document.createElement("div");
+                const div = document.createElement("div");
 
                 div.className = "quiz-question";
 
@@ -317,9 +339,7 @@
             });
         }
 
-
         function checkAnswer(questionIndex, correctAnswer) {
-
             const selected =
                 document.querySelector(
                     `input[name="q${questionIndex}"]:checked`
@@ -331,32 +351,21 @@
                 );
 
             if (!selected) {
-
-                result.innerText =
-                    "Please select an answer.";
-
+                result.innerText = "Please select an answer.";
                 result.className = "wrong";
-
                 return;
             }
 
             if (parseInt(selected.value) === correctAnswer) {
-
                 result.innerText = "✓ Correct!";
-
                 result.className = "correct";
-
             } else {
-
                 result.innerText = "✗ Wrong!";
-
                 result.className = "wrong";
             }
         }
 
-
         async function getLearningPath() {
-
             const topic =
                 document.getElementById("learningTopic").value;
 
@@ -375,7 +384,6 @@
             document.getElementById("learningPath").innerText =
                 data.learning_path;
         }
-
     </script>
 
 </body>
